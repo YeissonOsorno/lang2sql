@@ -7,11 +7,20 @@ import { TranslateResponse } from './interfaces/index.interface';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Post()
-  translate(@Body() payload: TranslateDto): TranslateResponse {
+  async translate(@Body() payload: TranslateDto): Promise<TranslateResponse> {
 
-    return {status: 'success', message: payload.prompt};
+    try {
+      const response: TranslateResponse = await this.appService.translateQuery(payload.prompt);
+      return {
+        status: response.status,
+        message: response.message
+      }
+    } catch (error) {
+      return error;
+    }
+
   }
 }

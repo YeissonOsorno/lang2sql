@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OpenAiModule } from './openai/open-ai/open-ai.module';
+import { OpenAiModule } from './openai/open-ai.module';
 
 @Module({
-  imports: [OpenAiModule],
+  imports: [ConfigModule.forRoot({
+    isGlobal: true,
+    envFilePath: '.env'
+  }), OpenAiModule],
   controllers: [AppController],
   providers: [AppService],
 })
